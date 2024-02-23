@@ -7,7 +7,7 @@ import subprocess
 pygame.init()
 
 # Configuration
-PROGRAM_1 = ['python', 'ia-random.py']
+PROGRAM_1 = ['python', 'ia-offensive.py']
 PROGRAM_2 = ['python', 'ia-dummy.py']
 WIDTH, HEIGHT = 500, 500
 GRID_SIZE = 5
