@@ -10,7 +10,7 @@ import subprocess
 pygame.init()
 
 # Configuration
-PROGRAM_1 = ['python3', 'ia_normal.py']
+PROGRAM_1 = ['python', 'ia_normal.py']
 WIDTH, HEIGHT = 500, 500
 GRID_SIZE = 5
 def is_valid_position(pos, positions, min_distance=2):
@@ -111,12 +111,13 @@ while not difficulty_selected:
 # Adjust game parameters based on difficulty
 if difficulty == "hard":
     AMMO = 3
-    PROGRAM_1 = ['python3', 'ia_hard.py']
+    POS_HEART = -1
+    PROGRAM_1 = ['python', 'ia_normal.py']
 
 def is_valid_command(command):
     player_xy = [pos_player1 % GRID_SIZE, pos_player1 // GRID_SIZE]
     enemy_xy = [pos_player2 % GRID_SIZE, pos_player2 // GRID_SIZE]
-    print(player_xy, enemy_xy)
+    # print(player_xy, enemy_xy)
 
     if not player1_turn:
         player_xy = enemy_xy
@@ -219,6 +220,7 @@ def updateState(command):
     player1_attack = False
     player2_attack = False
 
+
     if not player1_turn:
         player_index = 1
         player_xy = enemy_xy
@@ -227,6 +229,8 @@ def updateState(command):
 
     block[player_index] = 0
 
+    # print("dados do estado antes", player_index, player_xy, enemy_xy, gun_xy, heart_xy)
+    # print('globais antes', pos_player1, pos_player2, pos_gun, pos_heart, bullets, lifes)
     if command == "up":
         if player_xy[1] == 0 or (player_xy[0] == enemy_xy[0] and player_xy[1]-1 == enemy_xy[1]):
             status += " - Impossível mover"
@@ -364,6 +368,8 @@ def updateState(command):
         status += " - Defendeu"
         play_sound(block_sound)
 
+    # print("dados do estado depois", player_index, player_xy, enemy_xy, gun_xy, heart_xy)
+    # print('globais depois', pos_player1, pos_player2, pos_gun, pos_heart, bullets, lifes)
     return status, player1_attack, player2_attack
 
 updateScreen("Jogo iniciado", False, False)
@@ -394,6 +400,7 @@ while running:
 
         if command:
             if is_valid_command(command):
+                # print("player_command", command)
                 status, player1_attack, player2_attack = updateState(command)
                 updateScreen(status, player1_attack, player2_attack)
                 player1_turn = not player1_turn
@@ -402,9 +409,9 @@ while running:
             time.sleep(0.3)
     else:
         parameter = PROGRAM_1 + ['2'] + [''.join(str(item) for item in board)] + [str(lifes[0]), str(lifes[1])] + [str(bullets[0]), str(bullets[1])]
-        print(' '.join(parameter))
+        # print(' '.join(parameter))
         command = subprocess.check_output(' '.join(parameter), shell=True).decode('utf-8').strip()
-        print('ia_command', command)
+        # print('ia_command', command)
         time.sleep(0.5)
 
         if is_valid_command(command):

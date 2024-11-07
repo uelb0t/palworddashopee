@@ -90,13 +90,13 @@ class GameState:
       # Apply the action to the new state
       if action in ["up", "down", "left", "right"]:
         player_pos = new_state.player1_pos if new_state.player_turn == 1 else new_state.player2_pos
-        if action == "up":
+        if action == "up" and player_pos[1] > 0:
           player_pos[1] -= 1
-        elif action == "down":
+        elif action == "down" and player_pos[1] < GRID_SIZE - 1:
           player_pos[1] += 1
-        elif action == "left":
+        elif action == "left" and player_pos[0] > 0:
           player_pos[0] -= 1
-        elif action == "right":
+        elif action == "right" and player_pos[0] < GRID_SIZE - 1:
           player_pos[0] += 1
       elif action == "attack" and new_state.is_enemy_adjacent():
         base_damage = 1
